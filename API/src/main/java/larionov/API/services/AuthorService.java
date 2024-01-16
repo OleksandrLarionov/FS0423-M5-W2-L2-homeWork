@@ -1,7 +1,9 @@
 package larionov.API.services;
 
+import larionov.API.DAO.AuthorDAO;
 import larionov.API.entities.Author;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,11 +14,24 @@ import java.util.Random;
 @Service
 @Slf4j
 public class AuthorService {
+    @Autowired
+    AuthorDAO authorDAO;
     private List<Author> authors = new ArrayList<>();
 
     public List<Author> getAuthors() {
         return this.authors;
     }
+
+
+    public void saveInsideDb(Author author){
+        authorDAO.save(author);
+    }
+
+
+
+
+
+
 
     public Author saveAuthor(Author body) {
         Random rndm = new Random();
@@ -38,7 +53,7 @@ public class AuthorService {
     }
 
     public void delete(Long id) {
-      authors.removeIf(author -> author.getId().equals(id));
+        authors.removeIf(author -> author.getId().equals(id));
     }
 
     public Author findByIdAndUpdate(Long id, Author body) {

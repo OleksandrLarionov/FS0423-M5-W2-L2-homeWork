@@ -5,10 +5,8 @@ import larionov.API.entities.BlogPost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -43,23 +41,30 @@ public class BlogPostService {
     }
 
     public BlogPost findByIdAndUpdate(Long id, BlogPost body) {
-        BlogPost found = null;
-        for (BlogPost blogPost : this.blogPost) {
-            if (blogPost.getId() == id) {
-                found = blogPost;
-                found.setId(id);
-                found.setCategoria(body.getCategoria());
-                found.setTitolo(body.getTitolo());
-                found.setCover(blogPost.getCover());
-                found.setContenuto(blogPost.getContenuto());
-                found.setTempoDiLettura(blogPost.getTempoDiLettura());
+        Optional<BlogPost> blogPostOptional = this.blogPost.stream()
+                .filter(blogPost -> blogPost.getId().equals(id))
+                .findFirst();
 
-            }
-        }
-        if (found == null) {
+        if (blogPostOptional.isPresent()) {
+            BlogPost found = blogPostOptional.get();
+            found.setId(id);
+            found.setCategoria(body.getCategoria());
+            found.setTitolo(body.getTitolo());
+            return found;
+        } else {
             log.info("error");
+            return null;
         }
-        return found;
     }
+
+    public List<BlogPost> filterByCategory(String categoria) {
+        List<BlogPost> categoryList = this.blogPost.stream()
+                .filter(blogPost -> blogPost.getCategoria().equals(categoria))
+                .collect(Collectors.toList());
+
+        return categoryList;
+    }
+
+
 }
 

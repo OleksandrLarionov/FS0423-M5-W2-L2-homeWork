@@ -14,7 +14,8 @@ public class BlogPostController {
     BlogPostService blogPostService;
 
     @GetMapping
-    public List<BlogPost> getBlogPosts() {
+    public List<BlogPost> getBlogPosts(@RequestParam(required = false)String category) {
+        if(category != null) return blogPostService.filterByCategory(category);
         return blogPostService.getBlogPosts();
     }
 

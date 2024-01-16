@@ -34,7 +34,7 @@ public class AuthorController {
 
     @PutMapping("/{id}")
     public Author findByIdAndUpdate(@PathVariable Long id, @RequestBody Author body) {
-        return authorService.findByIdAndUpdate(id,body);
+        return authorService.findByIdNUptade(id,body);
     }
 
     @DeleteMapping("/{id}")

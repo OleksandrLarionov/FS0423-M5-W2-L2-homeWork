@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -21,16 +18,6 @@ public class AuthorService {
     public List<Author> getAuthors() {
         return this.authors;
     }
-
-
-    public void saveInsideDb(Author author){
-        authorDAO.save(author);
-    }
-
-
-
-
-
 
 
     public Author saveAuthor(Author body) {
@@ -74,5 +61,18 @@ public class AuthorService {
             log.info("error");
         }
         return found;
+    }
+
+    public Author findByIdNUptade(Long id, Author body) {
+        Optional<Author> authorOptional = this.authors.stream()
+                .filter(author -> author.getId().equals(id))
+                .findFirst();
+        if (authorOptional.isPresent()) {
+            Author found = authorOptional.get();
+            found.setId(id);
+            found.setName(body.getName());
+            found.setSurname(body.getSurname());
+            return found;
+        } else return null;
     }
 }

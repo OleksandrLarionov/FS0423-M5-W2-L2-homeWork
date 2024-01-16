@@ -29,26 +29,17 @@ public class BlogPostService {
     }
 
     public BlogPost findById(Long id) {
-        BlogPost found = null;
-        for (BlogPost author : this.blogPost) {
-            if (author.getId() == id) {
-                found = author;
-            }
-        }
-        if (found == null) {
-            log.info("per la peppa");
-        }
-        return found;
+        return blogPost.stream()
+                .filter(blog -> blog.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    log.info("per la peppa");
+                    return null;
+                });
     }
 
     public void delete(Long id) {
-        Iterator<BlogPost> iterator = this.blogPost.iterator();
-        while (iterator.hasNext()) {
-            BlogPost current = iterator.next();
-            if (current.getId() == id) {
-                iterator.remove();
-            }
-        }
+        blogPost.removeIf(blog -> blog.getId().equals(id));
     }
 
     public BlogPost findByIdAndUpdate(Long id, BlogPost body) {

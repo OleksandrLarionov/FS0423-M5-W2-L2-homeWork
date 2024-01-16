@@ -1,8 +1,5 @@
 package larionov.API.controllers;
-
-import larionov.API.entities.Author;
 import larionov.API.entities.BlogPost;
-import larionov.API.services.AuthorService;
 import larionov.API.services.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

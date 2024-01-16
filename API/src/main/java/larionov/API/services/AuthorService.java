@@ -28,26 +28,17 @@ public class AuthorService {
     }
 
     public Author findById(Long id) {
-        Author found = null;
-        for (Author author : this.authors) {
-            if (author.getId() == id) {
-                found = author;
-            }
-        }
-        if (found == null) {
-            log.info("per la peppa dell'autore");
-        }
-        return found;
+        return authors.stream()
+                .filter(author -> author.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    log.info("per la peppa");
+                    return null;
+                });
     }
 
     public void delete(Long id) {
-        Iterator<Author> iterator = this.authors.iterator();
-        while (iterator.hasNext()) {
-            Author current = iterator.next();
-            if (current.getId() == id) {
-                iterator.remove();
-            }
-        }
+      authors.removeIf(author -> author.getId().equals(id));
     }
 
     public Author findByIdAndUpdate(Long id, Author body) {
